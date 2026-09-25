@@ -1,0 +1,111 @@
+[
+  {
+    "id": "hotel-placeholder",
+    "name": "Vores Hotel (Adresse indsættes her)",
+    "category": "hotel",
+    "lat": 41.9028,
+    "lng": 12.4964,
+    "shortDesc": "Basen for turen i april 2027.",
+    "tips": "Tjek-ind info tilføjes senere. Placering ved Monti / Termini som udgangspunkt for udforskning af byen.",
+    "address": "Centrum, Rom (TBD)",
+    "hours": "24 timers reception",
+    "pills": ["Hotel Base", "April 2027", "Monti / Termini"],
+    "isHotel": true
+  },
+  {
+    "id": "spot-1",
+    "name": "Il Gocchetto",
+    "category": "winebar",
+    "lat": 41.8975,
+    "lng": 12.4680,
+    "shortDesc": "Klassisk, stemningsfuld enoteca med over 800 vine på hylderne og fremragende charcuteri.",
+    "tips": "Kom sidst på eftermiddagen til aperitivo. Bestil et glas Nebbiolo eller Sangiovese ledsaget af deres udvalg af italienske oste og skinker.",
+    "address": "Via dei Banchi Vecchi 8, 00186 Roma",
+    "hours": "Tir-Lør: 12:00 - 14:30 & 17:30 - 23:00 (Søn-Man lukket)",
+    "pills": ["800+ Vine", "Autentisk Enoteca", "Aperitivo", "Ost & Charcuteri"]
+  },
+  {
+    "id": "spot-2",
+    "name": "Roscioli Salumeria con Cucina",
+    "category": "restaurant",
+    "lat": 41.8942,
+    "lng": 12.4735,
+    "shortDesc": "Gastronomisk mekka for mad- og vinelskere. Kombineret delikatesse og gourmetrestaurant.",
+    "tips": "Bestil deres legendariske Spaghetti alla Carbonara lavet med sprød guanciale, pecorino og æg i verdensklasse. Bordbestilling i god tid er et absolut must!",
+    "address": "Via dei Giubbonari 21, 00186 Roma",
+    "hours": "Man-Søn: 12:30 - 16:00 & 19:00 - 00:00",
+    "pills": ["Roms Bedste Carbonara", "Delikatesse", "Kæmpe Vinkælder", "Michelin Guide"]
+  },
+  {
+    "id": "spot-3",
+    "name": "Trattoria Da Enzo al 29",
+    "category": "restaurant",
+    "lat": 41.8884,
+    "lng": 12.4764,
+    "shortDesc": "Hjertet af romersk trattoria-kultur i det maleriske Trastevere-kvarter.",
+    "tips": "Prøv deres friturestegte artiskok (Carciofi alla Giudia) og Cacio e Pepe. Kom 15-20 minutter før de åbner for at få et af de eftertragtede borde.",
+    "address": "Via dei Vascellari 29, 00153 Roma",
+    "hours": "Man-Lør: 12:15 - 15:00 & 19:15 - 23:00 (Søndag lukket)",
+    "pills": ["Autentisk Trattoria", "Trastevere", "Cacio e Pepe", "Carciofi"]
+  },
+  {
+    "id": "spot-4",
+    "name": "Enoteca Cul de Sac",
+    "category": "winebar",
+    "lat": 41.8981,
+    "lng": 12.4716,
+    "shortDesc": "Roms ældste moderne vinbar grundlagt i 1977 lige ved Piazza Navona. Over 1.500 vine.",
+    "tips": "Sid ved de udendørs marmorborde på Piazza di Pasquino. Deres 'vinbog' er som en encyklopædi over italienske cru-vine og Champagne.",
+    "address": "Piazza di Pasquino 73, 00186 Roma",
+    "hours": "Alle dage: 12:00 - 00:30",
+    "pills": ["1500+ Vinmærker", "Piazza Navona", "Historisk Vinbar", "Pateer & Skinker"]
+  },
+  {
+    "id": "spot-5",
+    "name": "Gelateria del Teatro",
+    "category": "gelato",
+    "lat": 41.9004,
+    "lng": 12.4695,
+    "shortDesc": "Håndværksgelato i særklasse, fremstillet i et åbent værksted i en historisk 1400-tals gyde.",
+    "tips": "Smag deres signaturvarianter: Ricotta, figen & valnød, eller mørk chokolade med et strejf af rødvin. Du kan se råvarerne blive forarbejdet gennem vinduet.",
+    "address": "Via dei Coronari 65, 00186 Roma",
+    "hours": "Alle dage: 11:00 - 23:00",
+    "pills": ["100% Natur-Gelato", "Åbent Værksted", "Via dei Coronari", "Håndværk"]
+  },
+  {
+    "id": "spot-6",
+    "name": "Pasticceria Regoli",
+    "category": "cafe",
+    "lat": 41.8955,
+    "lng": 12.5022,
+    "shortDesc": "Traditionsrigt romersk bageri og konditori siden 1916. Berømt for byens bedste maritozzi.",
+    "tips": "Spis en 'Maritozzo con la panna' – den klassiske romerske briochebolle skåret op og fyldt til randen med let pisket fløde – sammen med en stærk espresso.",
+    "address": "Via dello Statuto 60, 00185 Roma",
+    "hours": "Ons-Man: 07:00 - 20:00 (Tirsdag lukket)",
+    "pills": ["Maritozzo siden 1916", "Esquilino", "Traditionsrig Café", "Morgenmad"]
+  },
+  {
+    "id": "spot-7",
+    "name": "Pantheon & Piazza della Rotonda",
+    "category": "sight",
+    "lat": 41.8986,
+    "lng": 12.4769,
+    "shortDesc": "Det bedst bevarede monument fra det antikke Rom med verdens største uarmerede betonkuppel.",
+    "tips": "Gå ind omkring middagstid, når sollyset strømmer lodret ned gennem den 9 meter brede oculus i kuplen. Bestil entrébillet online i forvejen.",
+    "address": "Piazza della Rotonda, 00186 Roma",
+    "hours": "Alle dage: 09:00 - 19:00",
+    "pills": ["Antikt Vidunder", "Kuppel & Oculus", "Piazza della Rotonda", "Historie"]
+  },
+  {
+    "id": "spot-8",
+    "name": "Colosseum & Forum Romanum",
+    "category": "sight",
+    "lat": 41.8902,
+    "lng": 12.4922,
+    "shortDesc": "Det monumentale romerske amfiteater og hjertet af det antikke Romerrige.",
+    "tips": "Gå turen langs Via dei Fori Imperiali ved aftenstide, når ruinerne og amfiteatret er smukt oplyst af projektører.",
+    "address": "Piazza del Colosseo 1, 00184 Roma",
+    "hours": "Alle dage: 08:30 - 19:15",
+    "pills": ["Verdensarv", "Antikt Amfiteater", "Kejsernes Rom", "Must-See"]
+  }
+]

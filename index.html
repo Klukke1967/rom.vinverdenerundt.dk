@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Rom Guide">
+  <meta name="theme-color" content="#FAF7F2">
+  <title>Rom Bykort & Guide – La Città Eterna</title>
+
+  <!-- Google Fonts: Fraunces & Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+
+  <!-- App Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Top App Bar -->
+  <header class="top-header">
+    <div class="brand">
+      <div class="brand-badge">🏛️</div>
+      <div class="brand-text">
+        <h1>Rom Guide</h1>
+        <p class="subtitle">Interaktivt bykort & gastronomi • April 2027</p>
+      </div>
+    </div>
+    
+    <div class="header-stats">
+      <span class="stat-pill" id="total-count-pill">Indlæser steder...</span>
+    </div>
+  </header>
+
+  <!-- Main App Layout (Split screen on desktop, layered on mobile) -->
+  <div class="app-layout">
+    
+    <!-- Sidebar: Search, Filters & Places List -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <!-- Search Input -->
+        <div class="search-box">
+          <span class="search-icon">🔍</span>
+          <input type="text" id="search-input" placeholder="Søg på spots, retter eller områder..." autocomplete="off">
+          <button id="clear-search-btn" class="clear-btn" title="Ryd søgning" style="display: none;">✕</button>
+        </div>
+
+        <!-- Filter Chips Carousel -->
+        <div class="filter-carousel" id="filter-container">
+          <button class="filter-chip active" data-category="all">
+            <span class="chip-icon">✨</span> Alle <span class="chip-count" id="count-all">0</span>
+          </button>
+          <button class="filter-chip" data-category="winebar">
+            <span class="chip-icon">🍷</span> Vinbar <span class="chip-count" id="count-winebar">0</span>
+          </button>
+          <button class="filter-chip" data-category="restaurant">
+            <span class="chip-icon">🍝</span> Spisesteder <span class="chip-count" id="count-restaurant">0</span>
+          </button>
+          <button class="filter-chip" data-category="sight">
+            <span class="chip-icon">🏛️</span> Seværdigheder <span class="chip-count" id="count-sight">0</span>
+          </button>
+          <button class="filter-chip" data-category="gelato">
+            <span class="chip-icon">🍨</span> Gelato <span class="chip-count" id="count-gelato">0</span>
+          </button>
+          <button class="filter-chip" data-category="cafe">
+            <span class="chip-icon">☕</span> Café & Bagværk <span class="chip-count" id="count-cafe">0</span>
+          </button>
+          <button class="filter-chip" data-category="hotel">
+            <span class="chip-icon">🏨</span> Hotel Base <span class="chip-count" id="count-hotel">0</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Places List Scroll Area -->
+      <div class="places-list" id="places-list">
+        <!-- Dynamically rendered by app.js -->
+        <div class="loading-state">
+          <div class="spinner"></div>
+          <p>Indlæser udvalgte steder i Rom...</p>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Map Viewport -->
+    <main class="map-container">
+      <div id="map"></div>
+
+      <!-- Floating Map Quick Actions -->
+      <div class="map-floating-controls">
+        <button id="reset-view-btn" class="fab-btn" title="Centrér Rom Centrum">
+          🎯 <span>Centrér</span>
+        </button>
+        <button id="focus-hotel-btn" class="fab-btn" title="Find Hotellet">
+          🏨 <span>Hotel</span>
+        </button>
+      </div>
+
+      <!-- Mobile Bottom Navigation Toggle (Toggle between Map and List) -->
+      <nav class="mobile-nav-bar">
+        <button id="btn-show-map" class="nav-item active">
+          <span class="nav-icon">🗺️</span>
+          <span class="nav-label">Kort</span>
+        </button>
+        <button id="btn-show-list" class="nav-item">
+          <span class="nav-icon">📋</span>
+          <span class="nav-label">Liste (<span id="mobile-list-count">0</span>)</span>
+        </button>
+      </nav>
+    </main>
+
+  </div>
+
+  <!-- Detail Modal -->
+  <div class="modal-backdrop" id="modal-backdrop">
+    <div class="detail-modal" id="detail-modal" role="dialog" aria-modal="true">
+      <button class="modal-close-btn" id="modal-close-btn" aria-label="Luk vindue">✕</button>
+      <div class="modal-content" id="modal-body">
+        <!-- Injected via JavaScript -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <!-- Application JS -->
+  <script src="app.js"></script>
+</body>
+</html>
