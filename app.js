@@ -1,6 +1,6 @@
 /**
  * Rom Bykort & Guide - App Logic
- * Håndterer Leaflet kort, data fetch, filtrering, søgning og modal.
+ * Håndterer Leaflet kort, data fetch, filtrering, søgning, hover preview-bokse og modal.
  */
 
 // Konfiguration & Tilstand
@@ -16,8 +16,10 @@ const STATE = {
 
 // Kategori Metadata: Navne, ikoner og badge-klasser
 const CATEGORY_META = {
-  winebar: { label: 'Vinbar', icon: '🍷', badgeClass: 'cat-winebar', markerClass: 'marker-winebar' },
+  rooftop: { label: 'Rooftop Bar', icon: '🍸', badgeClass: 'cat-rooftop', markerClass: 'marker-rooftop' },
+  viral: { label: 'TikTok & Insta', icon: '📸', badgeClass: 'cat-viral', markerClass: 'marker-viral' },
   restaurant: { label: 'Spisested', icon: '🍝', badgeClass: 'cat-restaurant', markerClass: 'marker-restaurant' },
+  winebar: { label: 'Vinbar', icon: '🍷', badgeClass: 'cat-winebar', markerClass: 'marker-winebar' },
   sight: { label: 'Seværdighed', icon: '🏛️', badgeClass: 'cat-sight', markerClass: 'marker-sight' },
   gelato: { label: 'Gelato', icon: '🍨', badgeClass: 'cat-gelato', markerClass: 'marker-gelato' },
   cafe: { label: 'Café & Bagværk', icon: '☕', badgeClass: 'cat-cafe', markerClass: 'marker-cafe' },
@@ -43,10 +45,10 @@ const DOM = {
 };
 
 /**
- * Initialiserer Leaflet kort med CartoDB Positron tiles
+ * Initialiserer Leaflet kort med 100% gratis fliser (ingen API-nøgle eller vandmærker)
  */
 function initMap() {
-  const ROME_CENTER = [41.8902, 12.4922];
+  const ROME_CENTER = [41.8960, 12.4820];
   
   STATE.map = L.map('map', {
     center: ROME_CENTER,
@@ -73,10 +75,10 @@ function initMap() {
     attribution: 'Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ'
   });
 
-  // Tilføj det varme, detaljerede OSM Hot som standard
+  // Sæt varmt OSM Hot kort som standard
   osmHot.addTo(STATE.map);
 
-  // Lagvælger øverst til højre så man nemt kan skifte stil uden API-nøgle
+  // Lagvælger øverst til højre
   const baseMaps = {
     "Varmt Bykort (OSM Hot)": osmHot,
     "Klassisk OpenStreetMap": osmStandard,
@@ -110,7 +112,7 @@ async function loadLocations() {
 }
 
 /**
- * Opretter tilpassede HTML markører og placerer dem på kortet
+ * Opretter tilpassede HTML markører og interaktive hover-bokse
  */
 function renderMarkers() {
   // Ryd eksisterende markører
@@ -136,7 +138,40 @@ function renderMarkers() {
 
     const marker = L.marker([place.lat, place.lng], { icon: customIcon }).addTo(STATE.map);
 
-    // Klik på markør åbner detaljemodal
+    // Dybde-links til navigation apps
+    const googleMapsNav = `https://www.google.com/maps/dir/?api=1&destination=${place.lat},${place.lng}`;
+    const appleMapsNav = `https://maps.apple.com/?daddr=${place.lat},${place.lng}&dirflg=w`;
+
+    // Interaktiv Hover Boks (Leaflet Tooltip)
+    const hoverHtml = `
+      <div class="hover-card">
+        <div class="hover-header">
+          <span class="cat-badge ${meta.badgeClass}">${meta.icon} ${meta.label}</span>
+          ${isHotel ? '<span class="cat-badge cat-hotel">⭐ Hovedbase</span>' : ''}
+        </div>
+        <h3 class="hover-title">${place.name}</h3>
+        <p class="hover-desc">${place.shortDesc}</p>
+        ${place.tiktokNote ? `<div class="hover-viral">🔥 ${place.tiktokNote}</div>` : ''}
+        <div class="hover-actions">
+          <a href="${googleMapsNav}" target="_blank" rel="noopener noreferrer" class="hover-btn hover-btn-google" onclick="event.stopPropagation()">
+            <span>🗺️ Google Maps</span>
+          </a>
+          <a href="${appleMapsNav}" target="_blank" rel="noopener noreferrer" class="hover-btn hover-btn-apple" onclick="event.stopPropagation()">
+            <span>🧭 Apple Maps</span>
+          </a>
+        </div>
+      </div>
+    `;
+
+    marker.bindTooltip(hoverHtml, {
+      direction: 'top',
+      offset: [0, -18],
+      className: 'custom-hover-tooltip',
+      interactive: true,
+      opacity: 1
+    });
+
+    // Klik på markør åbner fuld detaljemodal
     marker.on('click', () => {
       openModal(place);
       highlightCard(place.id);
@@ -164,22 +199,44 @@ function renderList() {
   DOM.placesList.innerHTML = STATE.filteredPlaces.map(place => {
     const meta = CATEGORY_META[place.category] || { label: place.category, icon: '📍', badgeClass: 'cat-winebar' };
     const pillsHtml = (place.pills || []).map(p => `<span class="pill">${p}</span>`).join('');
+    const googleMapsNav = `https://www.google.com/maps/dir/?api=1&destination=${place.lat},${place.lng}`;
 
     return `
-      <article class="place-card ${place.isHotel ? 'hotel-card' : ''}" id="card-${place.id}" onclick="selectPlace('${place.id}')">
+      <article class="place-card ${place.isHotel ? 'hotel-card' : ''}" id="card-${place.id}" 
+               onclick="selectPlace('${place.id}')"
+               onmouseenter="previewMarker('${place.id}')"
+               onmouseleave="unpreviewMarker('${place.id}')">
         <div class="card-top">
           <h2 class="card-title">${place.name}</h2>
           <span class="cat-badge ${meta.badgeClass}">${meta.icon} ${meta.label}</span>
         </div>
         <p class="card-desc">${place.shortDesc}</p>
+        ${place.tiktokNote ? `<div class="hover-viral" style="margin-top: 4px;">🔥 ${place.tiktokNote}</div>` : ''}
         ${pillsHtml ? `<div class="card-pills">${pillsHtml}</div>` : ''}
         <div class="card-footer">
           <span>📍 ${place.address || 'Rom, Italien'}</span>
-          <span class="card-action-link">Se detaljer →</span>
+          <span class="card-action-link">Se detaljer & rute →</span>
         </div>
       </article>
     `;
   }).join('');
+}
+
+/**
+ * Åbner hover tooltip på kortet når man peger på et kort i sidebaren
+ */
+function previewMarker(placeId) {
+  const marker = STATE.markers[placeId];
+  if (marker) {
+    marker.openTooltip();
+  }
+}
+
+function unpreviewMarker(placeId) {
+  const marker = STATE.markers[placeId];
+  if (marker) {
+    marker.closeTooltip();
+  }
 }
 
 /**
@@ -191,14 +248,16 @@ function updateCounts() {
     counts[cat] = STATE.places.filter(p => p.category === cat).length;
   });
 
-  document.getElementById('count-all').textContent = counts.all;
+  const countAllEl = document.getElementById('count-all');
+  if (countAllEl) countAllEl.textContent = counts.all;
+
   Object.keys(CATEGORY_META).forEach(cat => {
     const el = document.getElementById(`count-${cat}`);
     if (el) el.textContent = counts[cat] || 0;
   });
 
   const activeCount = STATE.filteredPlaces.length;
-  DOM.totalCountPill.textContent = `${activeCount} af ${STATE.places.length} steder vist`;
+  DOM.totalCountPill.textContent = `${activeCount} af ${STATE.places.length} steder`;
   DOM.mobileListCount.textContent = activeCount;
 }
 
@@ -220,9 +279,10 @@ function applyFilters() {
     const descMatch = (place.shortDesc || '').toLowerCase().includes(query);
     const tipsMatch = (place.tips || '').toLowerCase().includes(query);
     const addrMatch = (place.address || '').toLowerCase().includes(query);
+    const viralMatch = (place.tiktokNote || '').toLowerCase().includes(query);
     const pillsMatch = (place.pills || []).some(p => p.toLowerCase().includes(query));
 
-    return nameMatch || descMatch || tipsMatch || addrMatch || pillsMatch;
+    return nameMatch || descMatch || tipsMatch || addrMatch || viralMatch || pillsMatch;
   });
 
   updateCounts();
@@ -269,11 +329,12 @@ function highlightCard(placeId) {
 }
 
 /**
- * Åbner detaljemodal med rig information og tips
+ * Åbner detaljemodal med rig information, tips og dybe links til navigation
  */
 function openModal(place) {
   const meta = CATEGORY_META[place.category] || { label: place.category, icon: '📍', badgeClass: 'cat-winebar' };
-  const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(place.name + ' ' + (place.address || 'Rom'))}`;
+  const googleMapsNav = `https://www.google.com/maps/dir/?api=1&destination=${place.lat},${place.lng}`;
+  const appleMapsNav = `https://maps.apple.com/?daddr=${place.lat},${place.lng}&dirflg=w`;
   const pillsHtml = (place.pills || []).map(p => `<span class="pill">${p}</span>`).join('');
 
   DOM.modalBody.innerHTML = `
@@ -290,6 +351,12 @@ function openModal(place) {
     </div>
 
     <p class="modal-desc">${place.shortDesc}</p>
+
+    ${place.tiktokNote ? `
+      <div class="hover-viral" style="margin-bottom: 16px; font-size: 0.85rem; padding: 8px 12px;">
+        📸 <strong>TikTok / Insta Hotspot:</strong> ${place.tiktokNote}
+      </div>
+    ` : ''}
 
     ${place.tips ? `
       <div class="modal-tips-box ${place.isHotel ? 'hotel-tip' : ''}">
@@ -311,11 +378,14 @@ function openModal(place) {
       </div>
     </div>
 
-    ${pillsHtml ? `<div class="card-pills" style="margin-bottom: 20px;">${pillsHtml}</div>` : ''}
+    ${pillsHtml ? `<div class="card-pills" style="margin-bottom: 24px;">${pillsHtml}</div>` : ''}
 
-    <div class="modal-actions">
-      <a href="${googleMapsUrl}" target="_blank" rel="noopener noreferrer" class="btn-primary">
-        <span>🗺️ Åbn i Google Maps</span>
+    <div class="modal-actions" style="flex-wrap: wrap;">
+      <a href="${googleMapsNav}" target="_blank" rel="noopener noreferrer" class="btn-primary">
+        <span>🗺️ Rute i Google Maps</span>
+      </a>
+      <a href="${appleMapsNav}" target="_blank" rel="noopener noreferrer" class="btn-secondary">
+        <span>🧭 Rute i Apple Maps</span>
       </a>
     </div>
   `;
@@ -386,7 +456,7 @@ function setupEventListeners() {
 
   // Flydende knapper
   DOM.resetViewBtn.addEventListener('click', () => {
-    STATE.map.flyTo([41.8902, 12.4922], 13);
+    STATE.map.flyTo([41.8960, 12.4820], 13);
   });
 
   DOM.focusHotelBtn.addEventListener('click', () => {

@@ -26,6 +26,16 @@
   --cat-sight-text: #225C3C;
   --cat-sight-accent: #489B6C;
 
+  --cat-rooftop-bg: #F6EDFD;
+  --cat-rooftop-border: #DFC2F7;
+  --cat-rooftop-text: #611D96;
+  --cat-rooftop-accent: #8E33DA;
+
+  --cat-viral-bg: #FFF0F5;
+  --cat-viral-border: #FFBED3;
+  --cat-viral-text: #A80044;
+  --cat-viral-accent: #F9246A;
+
   --cat-gelato-bg: #FDF1F7;
   --cat-gelato-border: #F6C8E2;
   --cat-gelato-text: #8B2060;
@@ -349,6 +359,18 @@ body {
   color: var(--cat-sight-text);
 }
 
+.cat-badge.cat-rooftop {
+  background: var(--cat-rooftop-bg);
+  border: 1px solid var(--cat-rooftop-border);
+  color: var(--cat-rooftop-text);
+}
+
+.cat-badge.cat-viral {
+  background: var(--cat-viral-bg);
+  border: 1px solid var(--cat-viral-border);
+  color: var(--cat-viral-text);
+}
+
 .cat-badge.cat-gelato {
   background: var(--cat-gelato-bg);
   border: 1px solid var(--cat-gelato-border);
@@ -490,6 +512,19 @@ body {
   background: var(--cat-sight-accent);
   color: #FFF;
   border: 2.5px solid #FFF;
+}
+
+.marker-rooftop {
+  background: var(--cat-rooftop-accent);
+  color: #FFF;
+  border: 2.5px solid #FFF;
+}
+
+.marker-viral {
+  background: var(--cat-viral-accent);
+  color: #FFF;
+  border: 2.5px solid #FFF;
+  box-shadow: 0 0 0 2px rgba(249, 36, 106, 0.3), 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 .marker-gelato {
@@ -747,6 +782,131 @@ body {
 
 .nav-icon {
   font-size: 18px;
+}
+
+/* Custom Leaflet Hover Tooltip Card */
+.leaflet-tooltip.custom-hover-tooltip {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 0;
+  box-shadow: var(--shadow-lg);
+  color: var(--text-main);
+  white-space: normal;
+  pointer-events: auto !important;
+  cursor: default;
+}
+
+.leaflet-tooltip-top.custom-hover-tooltip::before {
+  border-top-color: var(--border-color);
+}
+
+.hover-card {
+  width: 270px;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.hover-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.hover-title {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text-main);
+  line-height: 1.25;
+}
+
+.hover-desc {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.hover-viral {
+  font-size: 0.76rem;
+  font-weight: 600;
+  color: var(--cat-viral-text);
+  background: var(--cat-viral-bg);
+  padding: 4px 8px;
+  border-radius: var(--radius-xs);
+  line-height: 1.35;
+}
+
+.hover-actions {
+  display: flex;
+  gap: 6px;
+  margin-top: 4px;
+  padding-top: 8px;
+  border-top: 1px solid var(--border-color);
+}
+
+.hover-btn {
+  flex: 1;
+  padding: 6px 10px;
+  border-radius: var(--radius-sm);
+  font-size: 0.74rem;
+  font-weight: 600;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  transition: var(--transition);
+  cursor: pointer;
+}
+
+.hover-btn-google {
+  background: var(--bg-cream);
+  color: var(--text-main);
+  border: 1px solid var(--border-color);
+}
+
+.hover-btn-google:hover {
+  background: var(--border-color);
+}
+
+.hover-btn-apple {
+  background: var(--text-main);
+  color: #FFF;
+}
+
+.hover-btn-apple:hover {
+  background: #000;
+}
+
+.btn-secondary {
+  flex: 1;
+  background: var(--bg-cream);
+  color: var(--text-main);
+  border: 1px solid var(--border-color);
+  padding: 12px 18px;
+  border-radius: var(--radius-md);
+  font-family: inherit;
+  font-size: 0.88rem;
+  font-weight: 600;
+  text-decoration: none;
+  text-align: center;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: var(--transition);
+  cursor: pointer;
+}
+
+.btn-secondary:hover {
+  background: var(--border-color);
 }
 
 /* Empty State / Loading State */
