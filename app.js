@@ -57,12 +57,32 @@ function initMap() {
   // Tilføj zoom kontrol øverst til venstre
   L.control.zoom({ position: 'topleft' }).addTo(STATE.map);
 
-  // CartoDB Positron fliser for rent, lyst og moderne skandinavisk/italiensk look
-  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>',
-    subdomains: 'abcd',
-    maxZoom: 20
-  }).addTo(STATE.map);
+  // 100% Gratis kortlag uden krav om API-nøgle eller vandmærker
+  const osmHot = L.tileLayer('https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> bidragydere, Tiles af <a href="https://www.hotosm.org/" target="_blank">Humanitarian OpenStreetMap Team</a>'
+  });
+
+  const osmStandard = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> bidragydere'
+  });
+
+  const esriGray = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
+    maxZoom: 16,
+    attribution: 'Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ'
+  });
+
+  // Tilføj det varme, detaljerede OSM Hot som standard
+  osmHot.addTo(STATE.map);
+
+  // Lagvælger øverst til højre så man nemt kan skifte stil uden API-nøgle
+  const baseMaps = {
+    "Varmt Bykort (OSM Hot)": osmHot,
+    "Klassisk OpenStreetMap": osmStandard,
+    "Minimalistisk Grå (Esri)": esriGray
+  };
+  L.control.layers(baseMaps, null, { position: 'topright' }).addTo(STATE.map);
 }
 
 /**
