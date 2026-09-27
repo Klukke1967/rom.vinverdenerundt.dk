@@ -145,20 +145,25 @@ function renderMarkers() {
     // Interaktiv Hover Boks (Leaflet Tooltip)
     const hoverHtml = `
       <div class="hover-card">
-        <div class="hover-header">
-          <span class="cat-badge ${meta.badgeClass}">${meta.icon} ${meta.label}</span>
-          ${isHotel ? '<span class="cat-badge cat-hotel">⭐ Hovedbase</span>' : ''}
+        <div class="hover-img-wrap">
+          <img class="hover-img" src="${place.image || ''}" alt="${place.name}">
+          ${isHotel ? '<span class="cat-badge cat-hotel hover-img-badge">⭐ Hovedbase</span>' : ''}
         </div>
-        <h3 class="hover-title">${place.name}</h3>
-        <p class="hover-desc">${place.shortDesc}</p>
-        ${place.tiktokNote ? `<div class="hover-viral">🔥 ${place.tiktokNote}</div>` : ''}
-        <div class="hover-actions">
-          <a href="${googleMapsNav}" target="_blank" rel="noopener noreferrer" class="hover-btn hover-btn-google" onclick="event.stopPropagation()">
-            <span>🗺️ Google Maps</span>
-          </a>
-          <a href="${appleMapsNav}" target="_blank" rel="noopener noreferrer" class="hover-btn hover-btn-apple" onclick="event.stopPropagation()">
-            <span>🧭 Apple Maps</span>
-          </a>
+        <div class="hover-content">
+          <div class="hover-header">
+            <span class="cat-badge ${meta.badgeClass}">${meta.icon} ${meta.label}</span>
+          </div>
+          <h3 class="hover-title">${place.name}</h3>
+          <p class="hover-desc">${place.shortDesc}</p>
+          ${place.tiktokNote ? `<div class="hover-viral">🔥 ${place.tiktokNote}</div>` : ''}
+          <div class="hover-actions">
+            <a href="${googleMapsNav}" target="_blank" rel="noopener noreferrer" class="hover-btn hover-btn-google" onclick="event.stopPropagation()">
+              <span>🗺️ Google Maps</span>
+            </a>
+            <a href="${appleMapsNav}" target="_blank" rel="noopener noreferrer" class="hover-btn hover-btn-apple" onclick="event.stopPropagation()">
+              <span>🧭 Apple Maps</span>
+            </a>
+          </div>
         </div>
       </div>
     `;
@@ -350,6 +355,12 @@ function openModal(place) {
   const pillsHtml = (place.pills || []).map(p => `<span class="pill">${p}</span>`).join('');
 
   DOM.modalBody.innerHTML = `
+    ${place.image ? `
+      <div class="modal-hero-wrap">
+        <img class="modal-hero-img" src="${place.image}" alt="${place.name}">
+      </div>
+    ` : ''}
+
     <div class="modal-header-meta">
       <span class="cat-badge ${meta.badgeClass}">${meta.icon} ${meta.label}</span>
       ${place.isHotel ? '<span class="cat-badge cat-hotel">⭐ Hovedbase</span>' : ''}
