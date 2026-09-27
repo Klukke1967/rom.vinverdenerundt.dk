@@ -245,7 +245,11 @@ function unpreviewMarker(placeId) {
 function updateCounts() {
   const counts = { all: STATE.places.length };
   Object.keys(CATEGORY_META).forEach(cat => {
-    counts[cat] = STATE.places.filter(p => p.category === cat).length;
+    if (cat === 'viral') {
+      counts[cat] = STATE.places.filter(p => p.category === 'viral' || Boolean(p.tiktokNote)).length;
+    } else {
+      counts[cat] = STATE.places.filter(p => p.category === cat).length;
+    }
   });
 
   const countAllEl = document.getElementById('count-all');
@@ -268,8 +272,16 @@ function applyFilters() {
   const query = STATE.searchQuery.toLowerCase().trim();
 
   STATE.filteredPlaces = STATE.places.filter(place => {
-    // Kategori filter
-    const matchesCat = (STATE.selectedCategory === 'all') || (place.category === STATE.selectedCategory);
+    // Kategori filter (viral inkluderer alle steder med virale tips/Insta-spots)
+    let matchesCat = false;
+    if (STATE.selectedCategory === 'all') {
+      matchesCat = true;
+    } else if (STATE.selectedCategory === 'viral') {
+      matchesCat = (place.category === 'viral') || Boolean(place.tiktokNote);
+    } else {
+      matchesCat = (place.category === STATE.selectedCategory);
+    }
+
     if (!matchesCat) return false;
 
     // Søgefilter

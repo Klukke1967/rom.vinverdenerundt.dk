@@ -379,7 +379,8 @@
     "tips": "Billetten giver adgang til både Colosseum, Forum Romanum og Palatinerhøjen. Gå turen langs Via dei Fori Imperiali ved aftenstide for at se ruinerne oplyst.",
     "address": "Piazza del Colosseo 1, 00184 Roma",
     "hours": "Alle dage: 08:30 - 19:15",
-    "pills": ["Verdens Vidunder", "Antikt Amfiteater", "Kejsernes Rom", "Must-See"]
+    "pills": ["Verdens Vidunder", "Antikt Amfiteater", "Kejsernes Rom", "Must-See"],
+    "tiktokNote": "Det mest virale fotovinkel-spot er oppe fra muren over Colosseo metrostation eller trappen ved Via Nicola Salvi!"
   },
   {
     "id": "sight-pantheon",
@@ -403,7 +404,8 @@
     "tips": "Besøg fontænen ved midnat eller tidlig morgen kl. 06:30 for at opleve den i magisk ro og høre vandets brus uden trængsel.",
     "address": "Piazza di Trevi, 00187 Roma",
     "hours": "Offentlig plads åben 24/7",
-    "pills": ["Barok Mesterværk", "Møntkast Tradition", "Magisk om Aftenen", "Ikonisk Monument"]
+    "pills": ["Barok Mesterværk", "Møntkast Tradition", "Magisk om Aftenen", "Ikonisk Monument"],
+    "tiktokNote": "Klassikeren over dem alle! Gå ned mod vandet i de tidlige morgentimer for det perfekte møntkast-foto foran Palazzo Poli."
   },
   {
     "id": "sight-castel-sant-angelo",
@@ -419,15 +421,16 @@
   },
   {
     "id": "sight-spanske-trappe",
-    "name": "Den Spanske Trappe & Piazza di Spagna",
+    "name": "Den Spanske Trappe (Scalinata di Trinità dei Monti)",
     "category": "sight",
     "lat": 41.9060,
     "lng": 12.4828,
     "shortDesc": "De 135 monumentale trappetrin, der forbinder Piazza di Spagna med Trinità dei Monti-kirken.",
-    "tips": "Ved foden af trappen ligger Berninis 'Fontana della Barcaccia' (den synkende båd). Nyd synet om foråret, når trappen er smykket med lyserøde azaleaer.",
+    "tips": "Ved foden af trappen ligger Berninis 'Fontana della Barcaccia'. Bemærk: Det er i dag forbudt at sidde på trinene (politiet fløjter og uddeler bøder). Til gengæld er udsigten fra toppen foran kirken ved solnedgang magisk, og i april er trappen overdækket af lyserøde azaleaer!",
     "address": "Piazza di Spagna, 00187 Roma",
     "hours": "Offentlig plads åben 24/7",
-    "pills": ["135 Trappetrin", "Barcaccia Fontæne", "Trinità dei Monti", "Klassisk Rom"]
+    "pills": ["135 Trappetrin", "Barcaccia Fontæne", "Trinità dei Monti", "Insta Hotspot", "Azaleaer i April"],
+    "tiktokNote": "Det mest ikoniske trappespot i Europa! Fang billedet oppefra Trinità dei Monti med udsigt ned over Piazza di Spagna og mod Peterskirken."
   },
   {
     "id": "sight-caravaggio-kirke",
