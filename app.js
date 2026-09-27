@@ -142,39 +142,46 @@ function renderMarkers() {
     const googleMapsNav = `https://www.google.com/maps/dir/?api=1&destination=${place.lat},${place.lng}`;
     const appleMapsNav = `https://maps.apple.com/?daddr=${place.lat},${place.lng}&dirflg=w`;
 
-    // Interaktiv Hover Boks (Leaflet Tooltip)
+    // Interaktiv Hover Boks (Leaflet Tooltip med afbalanceret thumbnail)
     const hoverHtml = `
       <div class="hover-card">
-        <div class="hover-img-wrap">
-          <img class="hover-img" src="${place.image || ''}" alt="${place.name}">
-          ${isHotel ? '<span class="cat-badge cat-hotel hover-img-badge">⭐ Hovedbase</span>' : ''}
+        <div class="hover-top-row">
+          ${place.image ? `
+            <div class="hover-thumb-wrap">
+              <img class="hover-thumb" src="${place.image}" alt="${place.name}">
+            </div>
+          ` : ''}
+          <div class="hover-title-col">
+            <div class="hover-badges">
+              <span class="cat-badge ${meta.badgeClass}">${meta.icon} ${meta.label}</span>
+              ${isHotel ? '<span class="cat-badge cat-hotel">⭐ Hovedbase</span>' : ''}
+            </div>
+            <h3 class="hover-title">${place.name}</h3>
+          </div>
         </div>
-        <div class="hover-content">
-          <div class="hover-header">
-            <span class="cat-badge ${meta.badgeClass}">${meta.icon} ${meta.label}</span>
-          </div>
-          <h3 class="hover-title">${place.name}</h3>
-          <p class="hover-desc">${place.shortDesc}</p>
-          ${place.tiktokNote ? `<div class="hover-viral">🔥 ${place.tiktokNote}</div>` : ''}
-          <div class="hover-actions">
-            <a href="${googleMapsNav}" target="_blank" rel="noopener noreferrer" class="hover-btn hover-btn-google" onclick="event.stopPropagation()">
-              <span>🗺️ Google Maps</span>
-            </a>
-            <a href="${appleMapsNav}" target="_blank" rel="noopener noreferrer" class="hover-btn hover-btn-apple" onclick="event.stopPropagation()">
-              <span>🧭 Apple Maps</span>
-            </a>
-          </div>
+        <p class="hover-desc">${place.shortDesc}</p>
+        ${place.tiktokNote ? `<div class="hover-viral">🔥 ${place.tiktokNote}</div>` : ''}
+        <div class="hover-actions">
+          <a href="${googleMapsNav}" target="_blank" rel="noopener noreferrer" class="hover-btn hover-btn-google" onclick="event.stopPropagation()">
+            <span>🗺️ Google Maps</span>
+          </a>
+          <a href="${appleMapsNav}" target="_blank" rel="noopener noreferrer" class="hover-btn hover-btn-apple" onclick="event.stopPropagation()">
+            <span>🧭 Apple Maps</span>
+          </a>
         </div>
       </div>
     `;
 
-    marker.bindTooltip(hoverHtml, {
-      direction: 'top',
-      offset: [0, -18],
-      className: 'custom-hover-tooltip',
-      interactive: true,
-      opacity: 1
-    });
+    // Vis kun hover-tooltip på desktop (på mobil åbner klik direkte den mobilvenlige bundvisning)
+    if (window.innerWidth > 768) {
+      marker.bindTooltip(hoverHtml, {
+        direction: 'top',
+        offset: [0, -18],
+        className: 'custom-hover-tooltip',
+        interactive: true,
+        opacity: 1
+      });
+    }
 
     // Klik på markør åbner fuld detaljemodal
     marker.on('click', () => {
@@ -211,12 +218,19 @@ function renderList() {
                onclick="selectPlace('${place.id}')"
                onmouseenter="previewMarker('${place.id}')"
                onmouseleave="unpreviewMarker('${place.id}')">
-        <div class="card-top">
-          <h2 class="card-title">${place.name}</h2>
-          <span class="cat-badge ${meta.badgeClass}">${meta.icon} ${meta.label}</span>
+        <div class="card-body-row">
+          ${place.image ? `
+            <img src="${place.image}" alt="${place.name}" class="card-thumb" loading="lazy">
+          ` : ''}
+          <div class="card-body-content">
+            <div class="card-top">
+              <h2 class="card-title">${place.name}</h2>
+              <span class="cat-badge ${meta.badgeClass}">${meta.icon} ${meta.label}</span>
+            </div>
+            <p class="card-desc">${place.shortDesc}</p>
+          </div>
         </div>
-        <p class="card-desc">${place.shortDesc}</p>
-        ${place.tiktokNote ? `<div class="hover-viral" style="margin-top: 4px;">🔥 ${place.tiktokNote}</div>` : ''}
+        ${place.tiktokNote ? `<div class="hover-viral" style="margin-top: 6px;">🔥 ${place.tiktokNote}</div>` : ''}
         ${pillsHtml ? `<div class="card-pills">${pillsHtml}</div>` : ''}
         <div class="card-footer">
           <span>📍 ${place.address || 'Rom, Italien'}</span>
@@ -355,22 +369,24 @@ function openModal(place) {
   const pillsHtml = (place.pills || []).map(p => `<span class="pill">${p}</span>`).join('');
 
   DOM.modalBody.innerHTML = `
-    ${place.image ? `
-      <div class="modal-hero-wrap">
-        <img class="modal-hero-img" src="${place.image}" alt="${place.name}">
+    <div class="sheet-drag-handle"></div>
+    <div class="modal-top-section">
+      ${place.image ? `
+        <div class="modal-thumb-box">
+          <img class="modal-thumb-img" src="${place.image}" alt="${place.name}">
+        </div>
+      ` : ''}
+      <div class="modal-title-box">
+        <div class="modal-header-meta">
+          <span class="cat-badge ${meta.badgeClass}">${meta.icon} ${meta.label}</span>
+          ${place.isHotel ? '<span class="cat-badge cat-hotel">⭐ Hovedbase</span>' : ''}
+        </div>
+        <h2 class="modal-title">${place.name}</h2>
+        <div class="modal-address">
+          <span>📍</span>
+          <span>${place.address || 'Rom, Italien'}</span>
+        </div>
       </div>
-    ` : ''}
-
-    <div class="modal-header-meta">
-      <span class="cat-badge ${meta.badgeClass}">${meta.icon} ${meta.label}</span>
-      ${place.isHotel ? '<span class="cat-badge cat-hotel">⭐ Hovedbase</span>' : ''}
-    </div>
-
-    <h2 class="modal-title">${place.name}</h2>
-    
-    <div class="modal-address">
-      <span>📍</span>
-      <span>${place.address || 'Rom, Italien'}</span>
     </div>
 
     <p class="modal-desc">${place.shortDesc}</p>
