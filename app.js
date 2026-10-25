@@ -92,7 +92,7 @@ function initMap() {
  */
 async function loadLocations() {
   try {
-    const response = await fetch('locations.json');
+    const response = await fetch('locations.json?v=' + Date.now());
     if (!response.ok) throw new Error(`HTTP fejl: ${response.status}`);
     const data = await response.json();
     STATE.places = data;
@@ -525,4 +525,76 @@ document.addEventListener('DOMContentLoaded', () => {
   initMap();
   setupEventListeners();
   loadLocations();
+});
+
+
+// ============================================================
+// AUTOMATISK VERSIONSTJEK & CACHE-BUSTING
+// ============================================================
+async function checkForAppUpdates() {
+  try {
+    const res = await fetch('version.json?t=' + Date.now(), { cache: 'no-store' });
+    if (!res.ok) return;
+    const serverVer = await res.json();
+    const storedBuild = localStorage.getItem('rom_current_build');
+
+    if (!storedBuild) {
+      localStorage.setItem('rom_current_build', serverVer.buildTime);
+      return;
+    }
+
+    if (serverVer.buildTime > parseInt(storedBuild, 10)) {
+      showUpdateToast(serverVer);
+    }
+  } catch (e) {
+    console.debug('Update check skipped:', e);
+  }
+}
+
+function showUpdateToast(serverVer) {
+  const toast = document.getElementById('update-toast');
+  const btn = document.getElementById('btn-toast-reload');
+  if (!toast) return;
+
+  toast.classList.add('show');
+
+  if (btn) {
+    btn.onclick = () => {
+      forceAppReload(serverVer.buildTime);
+    };
+  }
+}
+
+function forceAppReload(newBuildTime) {
+  if (newBuildTime) {
+    localStorage.setItem('rom_current_build', newBuildTime);
+  }
+  const url = new URL(window.location.href);
+  url.searchParams.set('v', Date.now());
+  window.location.href = url.toString();
+}
+
+// Hook opdateringsknap og synlighedshændelser
+document.addEventListener('DOMContentLoaded', () => {
+  checkForAppUpdates();
+
+  const btnRefresh = document.getElementById('btn-force-refresh');
+  if (btnRefresh) {
+    btnRefresh.addEventListener('click', () => {
+      btnRefresh.style.transform = 'rotate(360deg)';
+      setTimeout(() => {
+        forceAppReload();
+      }, 200);
+    });
+  }
+
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible') {
+      checkForAppUpdates();
+    }
+  });
+
+  window.addEventListener('focus', () => {
+    checkForAppUpdates();
+  });
 });

@@ -8,6 +8,9 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta name="apple-mobile-web-app-title" content="Rom Guide">
   <meta name="theme-color" content="#FAF7F2">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
   <title>Rom Bykort & Guide – La Città Eterna</title>
 
   <!-- Google Fonts: Fraunces & Plus Jakarta Sans -->
@@ -19,7 +22,7 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
 
   <!-- App Stylesheet -->
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css?v=2">
 </head>
 <body>
 
@@ -34,6 +37,9 @@
     </div>
     
     <div class="header-stats">
+      <button id="btn-force-refresh" class="btn-refresh-pill" title="Tving opdatering af Rom Guiden" aria-label="Opdater app">
+        <span>🔄</span>
+      </button>
       <span class="stat-pill" id="total-count-pill">Indlæser steder...</span>
     </div>
   </header>
@@ -122,6 +128,15 @@
 
   </div>
 
+  <!-- Automatisk Opdaterings-Toast -->
+  <div id="update-toast" class="update-toast">
+    <div class="toast-content">
+      <span class="toast-icon">🏛️</span>
+      <span class="toast-text">Ny opdatering til Rom Guiden!</span>
+    </div>
+    <button id="btn-toast-reload" class="btn-toast-reload">Opdater nu</button>
+  </div>
+
   <!-- Detail Modal -->
   <div class="modal-backdrop" id="modal-backdrop">
     <div class="detail-modal" id="detail-modal" role="dialog" aria-modal="true">
@@ -135,6 +150,6 @@
   <!-- Leaflet JS -->
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
   <!-- Application JS -->
-  <script src="app.js"></script>
+  <script src="app.js?v=2"></script>
 </body>
 </html>
